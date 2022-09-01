@@ -13,7 +13,8 @@ void DR_Oscillator::prepare(double sampleRate)
 void DR_Oscillator::setFrequency(float frequency)
 {
 	hz = frequency;
-	delta = (hz * MathConstants<double>::twoPi) / fs;
+	delta_target = (hz * MathConstants<double>::twoPi) / fs;
+	delta_speed = (delta_target - delta) / (3.0 * (glide+0.01) * fs);
 }
 
 
@@ -24,8 +25,9 @@ void DR_Oscillator::processBlock(AudioSampleBuffer& buffer, int startSample, int
 	{
 		for (int channel = 0; channel < buffer.getNumChannels(); channel++)
 		{
-			buffer.addSample(channel, sample, gain * tri());
+			buffer.addSample(channel, sample, gain * saw());
 		}
+		updateDelta();
 		incrementPhase();
 	}
 }
@@ -33,15 +35,25 @@ void DR_Oscillator::processBlock(AudioSampleBuffer& buffer, int startSample, int
 
 void DR_Oscillator::incrementPhase()
 {
-	phase += delta;
+	phase += delta + ((detune-0.5) * delta);
 	if (phase > MathConstants<double>::twoPi) 
 	{ 
 		phase -= MathConstants<double>::twoPi; 
 	}
 }
 
-
-float DR_Oscillator::tri()
+void DR_Oscillator::updateDelta()
 {
-	return 0.0f;
+	if ((delta_speed > 0.0 && delta >= delta_target) || (delta_speed <= 0.0 && delta <= delta_target))
+	{
+		return;
+	}
+
+	delta += delta_speed;
+}
+
+
+float DR_Oscillator::saw()
+{
+	return 2.0f * (phase / MathConstants<float>::twoPi) - 1.0f;
 }

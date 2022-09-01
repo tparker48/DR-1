@@ -4,7 +4,12 @@
               addUsingNamespaceToJuceHeader="1" displaySplashScreen="1" jucerFormatVersion="1"
               pluginAUMainType="'aumu'" pluginVST3Category="Instrument" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="QMscgN" name="DR-1">
-    <GROUP id="{809D1F1D-7DC1-FC5E-5147-E24B788688D9}" name="Images"/>
+    <GROUP id="{809D1F1D-7DC1-FC5E-5147-E24B788688D9}" name="Images">
+      <FILE id="LdtILF" name="dark_ui_sketch.png" compile="0" resource="1"
+            file="Images/dark_ui_sketch.png"/>
+      <FILE id="MKHhPr" name="pre_ui_sketch.png" compile="0" resource="1"
+            file="Images/pre_ui_sketch.png"/>
+    </GROUP>
     <GROUP id="{740846A1-20F9-CCCD-27B3-ED5DE075F54B}" name="Source">
       <FILE id="sYPLZL" name="DR_Oscillator.cpp" compile="1" resource="0"
             file="Source/DR_Oscillator.cpp"/>

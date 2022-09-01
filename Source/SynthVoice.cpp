@@ -10,6 +10,11 @@ void SynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSound*
 {
 	hz = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
 	adsr.noteOn();
+
+	for (int i = 0; i < NUM_OSCS; i++)
+	{
+		oscs[i]->setFrequency(hz);
+	}
 }
 
 
@@ -38,6 +43,7 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOu
 	for (int i = 0; i < NUM_OSCS; i++)
 	{
 		oscs[i] = new DR_Oscillator();
+		oscs[i]->prepare(sampleRate);
 	}
 	
 
@@ -73,6 +79,11 @@ void SynthVoice::renderNextBlock(AudioBuffer< float >& outputBuffer, int startSa
 
 	dsp::AudioBlock<float> audioBlock(synthBuffer);
 	// noise.processBlock(synthBuffer, 0, synthBuffer.getNumSamples(), 1.0f);
+
+	for (int i = 0; i < NUM_OSCS; i++)
+	{
+		oscs[i]->processBlock(synthBuffer, 0, synthBuffer.getNumSamples(), 0.5f);
+	}
 
 	gain.process(dsp::ProcessContextReplacing<float>(audioBlock));
 	adsr.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumSamples());

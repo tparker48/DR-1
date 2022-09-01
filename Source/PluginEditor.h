@@ -19,7 +19,7 @@ public:
 
 private:
     void initializeKnob(Slider& obj, std::unique_ptr<SliderAttachment>& objP, std::string name);
-    void initializeButton(ToggleButton& obj, int toggleId);
+    void initializeButton(ToggleButton& obj, std::unique_ptr<ButtonAttachment>& objP, std::string name);
     void initializeKnobSensitivities();
 
     void initLookAndFeels();
@@ -30,9 +30,11 @@ private:
     
     Colour dark, light;
 
-    ToggleButton toggle0, toggle1, toggle2, toggle3, toggle5, toggle8;
-    Slider knob00, knob01, knob10, knob11, knob20, knob21;
-    std::unique_ptr<SliderAttachment> knob00P, knob01P, knob10P, knob11P, knob20P, knob21P;
+    ToggleButton toggle0, toggle1, toggle2, toggle3, toggle4;
+    std::unique_ptr<ButtonAttachment> toggle0P, toggle1P, toggle2P, toggle3P, toggle4P;
+
+    Slider knob00, knob01, knob10, knob11, knob20, knob21, knob30, knob31, knob40, knob41;
+    std::unique_ptr<SliderAttachment> knob00P, knob01P, knob10P, knob11P, knob20P, knob21P, knob30P, knob31P, knob40P, knob41P;
 
 
     DialLookAndFeel* customDial;

@@ -7,7 +7,7 @@
 class SynthVoice : public SynthesiserVoice
 {
 public:
-	const int NUM_OSCS = 6;
+	const int NUM_OSCS = 5;
 
 	bool canPlaySound(SynthesiserSound*) override;
 	void startNote(int midiNoteNumber, float velocity, SynthesiserSound * sound, int currentPitchWheelPosition) override;

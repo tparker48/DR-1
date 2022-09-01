@@ -19,12 +19,14 @@ public:
 	void processBlock(AudioSampleBuffer& buffer, int startSample, int numSamples, float gain);
 
 private:
-	float tri();
+	float saw();
 	void incrementPhase();
+	void updateDelta();
 
 	bool is_on;
 	float glide;
 	float detune;
 
-	double fs, hz, phase, delta;
+	double fs, hz, phase;
+	double delta, delta_target, delta_speed;
 };
