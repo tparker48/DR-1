@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+#include "UI/SliderLookAndFeel.h"
 #include "UI/DialLookAndFeel.h"
 #include "UI/ButtonLookAndFeel.h"
 
@@ -18,6 +19,7 @@ public:
     void resized() override;
 
 private:
+    void initializeSlider(Slider& obj, std::unique_ptr<SliderAttachment>& objP, std::string name);
     void initializeKnob(Slider& obj, std::unique_ptr<SliderAttachment>& objP, std::string name);
     void initializeButton(ToggleButton& obj, std::unique_ptr<ButtonAttachment>& objP, std::string name);
     void initializeKnobSensitivities();
@@ -30,13 +32,23 @@ private:
     
     Colour dark, light;
 
-    ToggleButton toggle0, toggle1, toggle2, toggle3, toggle4;
-    std::unique_ptr<ButtonAttachment> toggle0P, toggle1P, toggle2P, toggle3P, toggle4P;
+    static const int NUM_OSCS = 5;
 
-    Slider knob00, knob01, knob10, knob11, knob20, knob21, knob30, knob31, knob40, knob41;
-    std::unique_ptr<SliderAttachment> knob00P, knob01P, knob10P, knob11P, knob20P, knob21P, knob30P, knob31P, knob40P, knob41P;
+    Slider glide[NUM_OSCS];
+    Slider oct[NUM_OSCS];
+    Slider detune[NUM_OSCS];
+    ToggleButton toggle[NUM_OSCS];
+    Slider filterCutoff, filterResonance, filterCrunch;
+    Slider vibratoAmount, vibratoHz;
 
+    std::unique_ptr<SliderAttachment> glideP[NUM_OSCS];
+    std::unique_ptr<SliderAttachment> octP[NUM_OSCS];
+    std::unique_ptr<SliderAttachment> detuneP[NUM_OSCS];
+    std::unique_ptr<ButtonAttachment> toggleP[NUM_OSCS];
+    std::unique_ptr<SliderAttachment> filterCutoffP, filterResonanceP, filterCrunchP;
+    std::unique_ptr<SliderAttachment> vibratoAmountP, vibratoHzP;
 
+    SliderLookAndFeel* customSlider;
     DialLookAndFeel* customDial;
     ButtonLookAndFeel* customButton;
 

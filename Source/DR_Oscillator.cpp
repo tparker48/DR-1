@@ -21,6 +21,8 @@ void DR_Oscillator::setFrequency(float frequency)
 
 void DR_Oscillator::processBlock(AudioSampleBuffer& buffer, int startSample, int numSamples, float gain)
 {
+	if (!is_on) return;
+
 	for (int sample = 0; sample < numSamples; sample++)
 	{
 		for (int channel = 0; channel < buffer.getNumChannels(); channel++)

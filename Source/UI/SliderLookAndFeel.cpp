@@ -10,26 +10,33 @@
 
 #include "SliderLookAndFeel.h"
 
-void SliderLookAndFeel::drawLinearSlider(Graphics& g, int x, int y, int width, int height,
-    float sliderPos, float minSliderPos, float maxSliderPos,
-    const Slider::SliderStyle, Slider&)
+void SliderLookAndFeel::drawLinearSlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle, Slider&)
 {
-    int pos = (sliderPos - x) / width;
+    
 
-    g.setColour(dark);
+    int barWidth = width / 6;
+    int barOffset = width / 2 - barWidth / 2;
+
+    int handleWidth = width;
+    int handleHeight = barWidth * 1.5;
+    
+    int handleStreakWidth = .96 * handleWidth;
+    int handleStreakHeight = .25 * handleHeight;
+
+    int handleY = (height - handleHeight + 1) * ((sliderPos) / maxSliderPos);
+    int handleStreakY = handleY + (handleHeight / 2) - handleStreakHeight / 2;
+    int handleStreakX = (handleWidth - handleStreakWidth) / 2;
 
     // bar
-    int barHeight = height * 0.2;
-    g.fillRect(x, y + height/2 - barHeight/2, width, barHeight);
+    g.setColour(dark);
+    g.fillRect(x + barOffset, y, barWidth, height);
 
-    // thumb
-    int thumbWidth = width * 0.075;
-    g.fillRect((int)sliderPos - (thumbWidth /2), y, thumbWidth, height);
+    // handle
+    g.fillRect(x, handleY, width, handleHeight);
 
     g.setColour(light);
-
-    // thumb detail
-    int detailWidth = width * 0.02;
-    int detailHeight = height * 0.8;
-    g.fillRect((int)sliderPos - (detailWidth / 2), y + (height - detailHeight)/2, detailWidth, detailHeight);
+    g.fillRect(x + handleStreakX, handleStreakY, handleStreakWidth, handleStreakHeight);
 }
+
+
+

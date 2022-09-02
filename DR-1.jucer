@@ -5,10 +5,7 @@
               pluginAUMainType="'aumu'" pluginVST3Category="Instrument" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="QMscgN" name="DR-1">
     <GROUP id="{809D1F1D-7DC1-FC5E-5147-E24B788688D9}" name="Images">
-      <FILE id="LdtILF" name="dark_ui_sketch.png" compile="0" resource="1"
-            file="Images/dark_ui_sketch.png"/>
-      <FILE id="MKHhPr" name="pre_ui_sketch.png" compile="0" resource="1"
-            file="Images/pre_ui_sketch.png"/>
+      <FILE id="ZG2cbR" name="ui_bg.png" compile="0" resource="1" file="Images/ui_bg.png"/>
     </GROUP>
     <GROUP id="{740846A1-20F9-CCCD-27B3-ED5DE075F54B}" name="Source">
       <FILE id="sYPLZL" name="DR_Oscillator.cpp" compile="1" resource="0"
@@ -25,6 +22,10 @@
       <FILE id="bgijgS" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
       <FILE id="JsqCwm" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <GROUP id="{CB25A248-0B8D-1D60-D054-2A318C3B456D}" name="UI">
+        <FILE id="T3Wn3g" name="SliderLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/UI/SliderLookAndFeel.cpp"/>
+        <FILE id="Jp4Fnq" name="SliderLookAndFeel.h" compile="0" resource="0"
+              file="Source/UI/SliderLookAndFeel.h"/>
         <FILE id="Gg0wp3" name="ButtonLookAndFeel.cpp" compile="1" resource="0"
               file="Source/UI/ButtonLookAndFeel.cpp"/>
         <FILE id="lAct9d" name="ButtonLookAndFeel.h" compile="0" resource="0"

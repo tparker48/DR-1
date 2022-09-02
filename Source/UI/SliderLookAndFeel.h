@@ -28,10 +28,13 @@ public:
         this->light = light;
     }
 
-    void drawLinearSlider(Graphics& g, int x, int y, int width, int height,
+    void drawLinearSlider(Graphics&, int x, int y, int width, int height,
         float sliderPos, float minSliderPos, float maxSliderPos,
         const Slider::SliderStyle, Slider&) override;
 
 private:
     Colour dark, light;
+
+    const int sliderBarWidth = 75;
+    const int sliderHandleHeight = 100, sliderHandleWidth = 300;
 };
