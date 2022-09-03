@@ -129,7 +129,7 @@ void DR1AudioProcessorEditor::updateLookAndFeels()
 void DR1AudioProcessorEditor::initializeSlider(Slider& obj, std::unique_ptr<SliderAttachment>& objP, std::string name)
 {
     addAndMakeVisible(obj);
-    //objP.reset(new SliderAttachment(vts, name, obj));
+    objP.reset(new SliderAttachment(vts, name, obj));
     obj.setSliderStyle(Slider::LinearBarVertical);
     obj.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     obj.setPopupDisplayEnabled(false, false, this);
@@ -142,7 +142,7 @@ void DR1AudioProcessorEditor::initializeKnob(Slider& obj, std::unique_ptr<Slider
     addAndMakeVisible(obj);
     obj.setVelocityBasedMode(true);
     obj.setSliderStyle(Slider::LinearBarVertical);
-    //objP.reset(new SliderAttachment(vts, name, obj));
+    objP.reset(new SliderAttachment(vts, name, obj));
     obj.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     obj.setPopupDisplayEnabled(false, false, this);
     obj.setLookAndFeel(customDial);
@@ -153,7 +153,7 @@ void DR1AudioProcessorEditor::initializeKnob(Slider& obj, std::unique_ptr<Slider
 void DR1AudioProcessorEditor::initializeButton(ToggleButton& obj, std::unique_ptr<ButtonAttachment>& objP, std::string name)
 {
     addAndMakeVisible(obj);
-    //objP.reset(new ButtonAttachment(vts, name, obj));
+    objP.reset(new ButtonAttachment(vts, name, obj));
     obj.setClickingTogglesState(true);
     obj.setLookAndFeel(customButton);
 }
@@ -162,11 +162,12 @@ void DR1AudioProcessorEditor::initializeButton(ToggleButton& obj, std::unique_pt
 void DR1AudioProcessorEditor::initializeKnobSensitivities()
 {
     float knobSensitivity = 0.03;
+    float octKnobSensistivity = 0.03;
 
     for (int i = 0; i < NUM_OSCS; i++)
     {
         glide[i].setVelocityModeParameters(1.0, 0, knobSensitivity, false);
-        oct[i].setVelocityModeParameters(1.0, 0, knobSensitivity, false);
+        oct[i].setVelocityModeParameters(1.0, 0, octKnobSensistivity, false);
         detune[i].setVelocityModeParameters(1.0, 0, knobSensitivity, false);
     }
 

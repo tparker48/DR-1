@@ -81,6 +81,22 @@ void DR1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
             // voice->setParameters(2, *isOn2, *glide2, *detune2);
             // voice->setParameters(3, *isOn3, *glide3, *detune3);
             // voice->setParameters(4, *isOn4, *glide4, *detune4);
+
+            for (int i = 0; i < 5; i++)
+            {
+                auto toggle = vts.getRawParameterValue("toggle" + std::to_string(i));
+                auto glide = vts.getRawParameterValue("glide" + std::to_string(i));
+                auto oct = vts.getRawParameterValue("oct" + std::to_string(i));
+                auto detune = vts.getRawParameterValue("detune" + std::to_string(i));
+                voice->setOscParameters(i, *toggle, *glide, *oct, *detune);
+            }
+
+            auto filterCutoff = vts.getRawParameterValue("filterCutoff");
+            auto filterResonance = vts.getRawParameterValue("filterResonance");
+            auto filterCrunch = vts.getRawParameterValue("filterCrunch");
+            auto vibratoAmount = vts.getRawParameterValue("vibratoAmount");
+            auto vibratoHz = vts.getRawParameterValue("vibratoHz");
+            voice->setGlobalParameters(*filterCutoff, *filterResonance, *filterCrunch, *vibratoAmount, *vibratoHz);
         }
     }
 
@@ -106,59 +122,47 @@ void DR1AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 AudioProcessorValueTreeState::ParameterLayout DR1AudioProcessor::createParameterLayout()
 {
     std::vector<std::unique_ptr<RangedAudioParameter>> params;
-    // 
-    // auto knob00 = std::make_unique<AudioParameterFloat>("knob00", "k00",
-    //     NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.9f);
-    // 
-    // auto knob01 = std::make_unique<AudioParameterFloat>("knob01", "k01",
-    //     NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.9f);
-    // 
-    // auto knob10 = std::make_unique<AudioParameterFloat>("knob10", "k10",
-    //     NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.9f);
-    // 
-    // auto knob11 = std::make_unique<AudioParameterFloat>("knob11", "k11",
-    //     NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.9f);
-    // 
-    // auto knob20 = std::make_unique<AudioParameterFloat>("knob20", "k20",
-    //     NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.9f);
-    // 
-    // auto knob21 = std::make_unique<AudioParameterFloat>("knob21", "k21",
-    //     NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.9f);
-    // 
-    // auto knob30 = std::make_unique<AudioParameterFloat>("knob30", "k30",
-    //     NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.9f);
-    // 
-    // auto knob31 = std::make_unique<AudioParameterFloat>("knob31", "k31",
-    //     NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.9f);
-    // 
-    // auto knob40 = std::make_unique<AudioParameterFloat>("knob40", "k40",
-    //     NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.9f);
-    // 
-    // auto knob41 = std::make_unique<AudioParameterFloat>("knob41", "k41",
-    //     NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.9f);
-    // 
-    // 
-    // auto toggle0 = std::make_unique<AudioParameterFloat>("toggle0", "t0", 0.0f, 1.0f, 1.0f);
-    // auto toggle1 = std::make_unique<AudioParameterFloat>("toggle1", "t1", 0.0f, 1.0f, 1.0f);
-    // auto toggle2 = std::make_unique<AudioParameterFloat>("toggle2", "t2", 0.0f, 1.0f, 1.0f);
-    // auto toggle3 = std::make_unique<AudioParameterFloat>("toggle3", "t3", 0.0f, 1.0f, 1.0f);
-    // auto toggle4 = std::make_unique<AudioParameterFloat>("toggle4", "t4", 0.0f, 1.0f, 1.0f);
     
-    // params.push_back(std::move(knob00));
-    // params.push_back(std::move(knob01));
-    // params.push_back(std::move(knob10));
-    // params.push_back(std::move(knob11));
-    // params.push_back(std::move(knob20));
-    // params.push_back(std::move(knob21));
-    // params.push_back(std::move(knob30));
-    // params.push_back(std::move(knob31));
-    // params.push_back(std::move(knob40));
-    // params.push_back(std::move(knob41));
-    // params.push_back(std::move(toggle0));
-    // params.push_back(std::move(toggle1));
-    // params.push_back(std::move(toggle2));
-    // params.push_back(std::move(toggle3));
-    // params.push_back(std::move(toggle4));
+    for (int i = 0; i < 5; i++)
+    {
+        auto glide = std::make_unique<AudioParameterFloat>("glide" + std::to_string(i), "g" + std::to_string(i),
+            NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.6f);
+
+        auto oct = std::make_unique<AudioParameterFloat>("oct" + std::to_string(i), "o" + std::to_string(i),
+            NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.5f);
+
+        auto detune = std::make_unique<AudioParameterFloat>("detune" + std::to_string(i), "d" + std::to_string(i),
+            NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.5f);
+
+        auto toggle = std::make_unique<AudioParameterFloat>("toggle" + std::to_string(i), "t" + std::to_string(i), 0.0f, 1.0f, 1.0f);
+
+        params.push_back(std::move(glide));
+        params.push_back(std::move(oct));
+        params.push_back(std::move(detune));
+        params.push_back(std::move(toggle));
+    }
+    
+    auto filterCutoff = std::make_unique<AudioParameterFloat>("filterCutoff", "fc",
+        NormalisableRange<float>(0.0f, 1.0f, 0.0f, 0.3f), 0.75f);
+
+    auto filterResonance = std::make_unique<AudioParameterFloat>("filterResonance", "fr",
+        NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.0f);
+
+    auto filterCrunch = std::make_unique<AudioParameterFloat>("filterCrunch", "fcr",
+        NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.0f);
+
+    auto vibratoAmount = std::make_unique<AudioParameterFloat>("vibratoAmount", "va",
+        NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.1f);
+
+    auto vibratoHz = std::make_unique<AudioParameterFloat>("vibratoHz", "vhz",
+        NormalisableRange<float>(0.0f, 1.0f, 0.0f), 0.1f);
+    
+    params.push_back(std::move(filterCutoff));
+    params.push_back(std::move(filterResonance));
+    params.push_back(std::move(filterCrunch));
+    params.push_back(std::move(vibratoAmount));
+    params.push_back(std::move(vibratoHz));
+
     return { params.begin(), params.end() };
 }
 

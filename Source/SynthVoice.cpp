@@ -61,6 +61,9 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOu
 	gain.prepare(spec);
 	gain.setGainLinear(0.2f);
 
+	lpf.prepare(spec);
+	lpf.setMode(dsp::LadderFilterMode::LPF24);
+
 	isPrepared = true;
 }
 
@@ -68,33 +71,34 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOu
 void SynthVoice::renderNextBlock(AudioBuffer< float >& outputBuffer, int startSample, int numSamples)  
 {
 	jassert (isPrepared);
-
-	if (!isVoiceActive())
-	{
-		return;
-	}
+	if (!isVoiceActive()) return;
 
 	synthBuffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
 	synthBuffer.clear();
-
-	dsp::AudioBlock<float> audioBlock(synthBuffer);
-	// noise.processBlock(synthBuffer, 0, synthBuffer.getNumSamples(), 1.0f);
 
 	for (int i = 0; i < NUM_OSCS; i++)
 	{
 		oscs[i]->processBlock(synthBuffer, 0, synthBuffer.getNumSamples(), 0.5f);
 	}
 
+	dsp::AudioBlock<float> audioBlock(synthBuffer);
+	lpf.process(dsp::ProcessContextReplacing<float>(audioBlock));
 	gain.process(dsp::ProcessContextReplacing<float>(audioBlock));
 	adsr.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumSamples());
 
 	for (int channel = 0; channel < outputBuffer.getNumChannels(); channel++)
 	{
 		outputBuffer.addFrom(channel, startSample, synthBuffer, channel, 0, numSamples);
-		
-		if (!adsr.isActive())
-		{
-			clearCurrentNote();
-		}
+		if (!adsr.isActive()) clearCurrentNote();
 	}
+}
+
+
+void SynthVoice::setGlobalParameters(float filterCutoff, float filterResonance, float filterCrunch, float vibratoAmount, float vibratoHz)
+{
+	lpf.setCutoffFrequencyHz(50.0f + filterCutoff*19950.0f);
+	lpf.setResonance(filterResonance);
+	lpf.setDrive(1.0f + filterCrunch*39.0f);
+	vibAmt = vibratoAmount;
+	vibHz = vibratoHz;
 }

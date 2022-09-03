@@ -14,7 +14,7 @@ public:
 
 	void setFrequency(float frequency);
 
-	void setParams(bool is_on, float glide, float detune) { this->is_on = is_on; this->glide = glide; this->detune = detune; }
+	void setParams(bool is_on, float glide, float octave, float detune) { this->is_on = is_on; this->glide = glide; this->octave = octave, this->detune = detune; }
 
 	void processBlock(AudioSampleBuffer& buffer, int startSample, int numSamples, float gain);
 
@@ -23,8 +23,10 @@ private:
 	void incrementPhase();
 	void updateDelta();
 
+	// oscillator parameters
 	bool is_on;
 	float glide;
+	float octave;
 	float detune;
 
 	double fs, hz, phase;

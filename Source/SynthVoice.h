@@ -17,19 +17,19 @@ public:
 	void prepareToPlay(double sampleRate, int samplesPerBlock, int numOutputChannels);
 	void renderNextBlock(AudioBuffer< float > & outputBuffer, int startSample, int numSamples) override;
 
-	void SynthVoice::setParameters(int osc_idx, bool is_on, float glide, float detune) { oscs[osc_idx]->setParams(is_on, glide, detune); }
+	void setOscParameters(int osc_idx, bool is_on, float glide, float oct, float detune) { oscs[osc_idx]->setParams(is_on, glide, oct, detune); }
+	void setGlobalParameters(float filterCutoff, float filterResonance, float filterCrunch, float vibratoAmount, float vibratoHz);
 
 private:
-	DR_Oscillator** oscs;
-
-	ADSR adsr;
-	ADSR::Parameters adsr_params = { 0.444f, 0.0f, 1.0f, 2.0f };
-
-	dsp::Gain<float> gain;
-	
 	AudioBuffer<float> synthBuffer;
 
+	DR_Oscillator** oscs;
+	ADSR adsr;
+	ADSR::Parameters adsr_params = { 0.444f, 0.0f, 1.0f, 2.0f };
+	dsp::LadderFilter<float> lpf;
+	dsp::Gain<float> gain;
+	
+	float vibAmt, vibHz;
 	float hz;
-	float glideSpeed;
 	bool isPrepared;
 };
