@@ -37,7 +37,12 @@ void DR_Oscillator::processBlock(AudioSampleBuffer& buffer, int startSample, int
 
 void DR_Oscillator::incrementPhase()
 {
-	phase += delta + ((detune-0.5) * delta);
+	// octave shifting
+	float oct_scale[5] = { 0.25f, 0.5f, 1.0f, 2.0f, 4.0f };
+	float oct_multiplier = oct_scale[(int)(octave * 4)];
+	float real_delta = delta * oct_multiplier;
+
+	phase += real_delta + ((detune-0.5) * real_delta);
 	if (phase > MathConstants<double>::twoPi) 
 	{ 
 		phase -= MathConstants<double>::twoPi; 
