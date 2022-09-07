@@ -45,7 +45,8 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int numOu
 		oscs[i] = new DR_Oscillator();
 		oscs[i]->prepare(sampleRate);
 	}
-	
+
+	oscs[0]->setIsVibMaster(true);
 
 	adsr.setSampleRate(sampleRate);
 	adsr_params.attack = 0.04f;
@@ -99,6 +100,9 @@ void SynthVoice::setGlobalParameters(float filterCutoff, float filterResonance, 
 	lpf.setCutoffFrequencyHz(50.0f + filterCutoff*19950.0f);
 	lpf.setResonance(filterResonance);
 	lpf.setDrive(1.0f + filterCrunch*39.0f);
-	vibAmt = vibratoAmount;
-	vibHz = vibratoHz;
+
+	for (int i = 0; i < NUM_OSCS; i++)
+	{
+		oscs[i]->setVibrato(vibratoAmount, vibratoHz);
+	}
 }

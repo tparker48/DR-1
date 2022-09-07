@@ -29,7 +29,6 @@ private:
 	dsp::LadderFilter<float> lpf;
 	dsp::Gain<float> gain;
 	
-	float vibAmt, vibHz;
 	float hz;
 	bool isPrepared;
 };
